@@ -36,3 +36,27 @@ steps:
 - task: BatchScript@1
   inputs:
     filename: 'src/PokerLeagueManager.UI.Web/BuildAngular.bat'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\deploy'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\deploy'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/src/PokerLeagueManager.Utilties/bin/Debug'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Utility'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\**\*.dacpac'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
